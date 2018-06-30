@@ -2,13 +2,17 @@
   <arg name="base"/>
   <arg name="stacks"/>
   <arg name="3d_sensor"/>
+  <arg name="appendix" default=""/>
 
-  <arg name="urdf_file" default="$(find xacro)/xacro --inorder '$(find turtlebot_description)/robots/$(arg base)_$(arg stacks)_$(arg 3d_sensor).urdf.xacro'"/>
+  <arg name="urdf_file" default="$(find xacro)/xacro --inorder '$(find turtlebot_description)/robots/$(arg base)_$(arg stacks)_$(arg 3d_sensor)$(arg appendix).urdf.xacro'"/>
   <param name="robot_description" command="$(arg urdf_file)"/>
+  <!-- <arg name="sdf_file" default="$(find kobuki_description)/urdf/kobuki_kinect.sdf"/> -->
+  <!-- <param name="robot_description_gazebo" textfile="$(find kobuki_description)/urdf/kobuki_kinect.sdf"/> -->
 
   <!-- Gazebo model spawner -->
   <node name="spawn_turtlebot_model" pkg="gazebo_ros" type="spawn_model"
-        args="$(optenv ROBOT_INITIAL_POSE) -unpause -urdf -param robot_description -model mobile_base"/>
+      args="$(optenv ROBOT_INITIAL_POSE) -unpause -urdf -param robot_description -model mobile_base"/>
+      <!-- args="$(optenv ROBOT_INITIAL_POSE) -unpause -sdf -file $(arg sdf_file) robot_description_gazebo -model mobile_base"/> -->
 
   <!-- Velocity muxer -->
   <node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager"/>
